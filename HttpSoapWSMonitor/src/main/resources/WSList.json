@@ -1,0 +1,32 @@
+  [  
+     {
+      "environment":"ENV1",
+      "servicename": "google",
+      "servicelink": "http://www.google.com",
+      "servicetype": "http",
+      "servicemethod": "GET",
+      "timeout":3000,
+      "parameter": [null],
+      "xmlname":null
+     },
+     {
+      "environment":"ENV1",
+      "servicename": "CountryList",
+      "servicelink": "https://restcountries.eu/rest/v2/name/India",
+      "servicetype": "http",
+      "servicemethod": "GET",
+      "timeout":3000,
+      "parameter": [null],
+      "xmlname":null
+     },
+     {
+      "environment":"ENV1",
+      "servicename": "HolidayService",
+      "servicelink": "http://www.holidaywebservice.com/HolidayService_v2/HolidayService2.asmx?op=GetHolidaysAvailable",
+      "servicetype": "soap",
+      "servicemethod": "POST",
+      "timeout":3000,
+      "parameter": ["Canada"],
+      "xmlname":"/Users/arunmohan/git/HttpSoapWSMonitor/HttpSoapWSMonitor/src/main/resources/Weather.xml"
+      }                
+ ]
