@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "appgroup": "TLM-OMS",
+    "apparea": "TLM-OMS",
+    "appname": "BACK SYNC",
+    "appregion": "O5",
+    "kpiname": "Grocery Sync Status",
+    "kpigroup": "Application Health",
+    "kpitype": "Application"
+  },
+  "webservice": [
+    {
+      "response": {
+        "Webservice Host": "google",
+        "Division": "WM"
+      },
+      "servicelink": "http://www.google.com",
+      "servicetype": "http",
+      "servicemethod": "GET",
+      "greentimeout":2000,
+      "ambertimeout": 4000,
+      "timeout": 6000,
+      "parameter": [
+        null
+      ],
+      "xmlname": null
+    },
+    {
+      "response": {
+        "Webservice Host": "Rest",
+        "Division": "India"
+      },
+      "servicelink": "https://restcountries.eu/rest/v2/name/India",
+      "servicetype": "http",
+      "servicemethod": "GET",
+      "greentimeout": 2000,
+      "ambertimeout": 4000,
+      "timeout": 6000,
+      "parameter": [
+        null
+      ],
+      "xmlname": null
+    },
+    {
+      "response": {
+        "Webservice Host": "tsti5523",
+        "Division": "SAM"
+      },
+      "servicelink": "http://www.holidaywebservice.com/HolidayService_v2/HolidayService2.asmx?op=GetHolidaysAvailable",
+      "servicetype": "soap",
+      "servicemethod": "POST",
+      "greentimeout": 2000,
+      "ambertimeout": 4000,
+      "timeout": 6000,
+      "parameter": ["Canada"],
+      "xmlname": "/Users/arunmohan/git/HttpSoapWSMonitor/HttpSoapWSMonitor/src/main/resources/Weather.xml"
+    }
+  ]
+}

@@ -7,46 +7,74 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.DataOutputStream;
-import java.io.InputStreamReader;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class WebService {
 
-	String environment;
-	String serviceName;
 	String serviceLink;
 	String serviceType;
 	String serivceMethod;
 	int timeOut;
+	int greenTimeOut;
+	int amberTimeOut;
 	JSONArray parameter;
 	String xmlFile;
 	JSONObject jsonRspose;
+
+	public void setJsonRspose(JSONObject jsonRspose) {
+		this.jsonRspose = jsonRspose;
+	}
+
 	public JSONObject getJsonRspose() {
 		return jsonRspose;
 	}
+	
 	@SuppressWarnings("unchecked")
 	public void setJsonRspose(int resposeCode,long latency) {
-		this.jsonRspose = new JSONObject();
-		this.jsonRspose.put("retuncode", Integer.toString(resposeCode));
-		this.jsonRspose.put("environment",this.getEnvironment());
-		this.jsonRspose.put("service", this.getServiceName());
-		this.jsonRspose.put("latency", latency+"ms");
+		//this.jsonRspose = new JSONObject();
+		String respColor=null,respText=null;
+		if (resposeCode == 200)  
+		{
+			if (latency < this.getGreenTimeOut()) {
+				respText="Service is UP; Latency - "+latency+"ms";
+				respColor="GREEN";
+			}
+			else if ((latency >= this.getGreenTimeOut()) && (latency < this.getAmberTimeOut())) {
+				respText="Service is UP; Latency - "+latency+"ms";
+				respColor="AMBER";
+			}
+			else {
+				respText="Service is UP; Latency - "+latency+"ms";
+				respColor="RED";
+			}				
+		}
+		else {
+			respText="Service is DOWN";
+			respColor="RED";
+		}
+		this.jsonRspose.put("Response", respText);
+		this.jsonRspose.put("Response status",respColor);
+		KPIErrorLog.logger.debug(jsonRspose + " Latency:"+latency+" Response Code:"+ resposeCode);
+		
 			
 	}
-	private String getEnvironment() {
-		return environment;
+	public int getGreenTimeOut() {
+		return greenTimeOut;
 	}
-	private void setEnvironment(String environment) {
-		this.environment = environment;
+	public void setGreenTimeOut(String timeOutString) {
+		this.greenTimeOut = Integer.parseInt(timeOutString);
 	}
-	private String getServiceName() {
-		return serviceName;
+
+	public int getAmberTimeOut() {
+		return amberTimeOut;
 	}
-	private void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
+
+	public void setAmberTimeOut(String timeOutString) {
+		this.amberTimeOut = Integer.parseInt(timeOutString);
 	}
+	
 	private String getServiceLink() {
 		return serviceLink;
 	}
@@ -88,29 +116,28 @@ public class WebService {
 	}
 	public WebService(JSONObject jsonObj) {
 		
-		this.setEnvironment((String) jsonObj.get("environment"));
-		this.setServiceName((String) jsonObj.get("servicename"));
 		this.setServiceLink((String) jsonObj.get("servicelink"));
 		this.setServiceType((String) jsonObj.get("servicetype"));
 		this.setSerivceMethod((String) jsonObj.get("servicemethod"));
 		this.setTimeOut(jsonObj.get("timeout").toString());
+		this.setGreenTimeOut(jsonObj.get("greentimeout").toString());
+		this.setAmberTimeOut(jsonObj.get("ambertimeout").toString());
 		this.setParameter((JSONArray) jsonObj.get("parameter"));
 		this.setXmlFile((String) jsonObj.get("xmlname"));
-		
-		//printWebservice();
-
+		this.setJsonRspose((JSONObject) jsonObj.get("response"));	
+		this.printWebservice();
 		
 	}
 	
 	private void printWebservice() {
-		System.out.println("environment:"+this.getEnvironment());
-		System.out.println("servicename:"+this.getServiceName());
-		System.out.println("servicelink"+this.getServiceLink());
-		System.out.println("servicetype"+this.getServiceType());
-		System.out.println("servicemethod"+this.getSerivceMethod());
-		System.out.println("timeout"+this.getTimeOut());
-		System.out.println("parameter"+this.getParameter());
-		System.out.println("xmlname"+this.getXmlFile());
+
+		KPIErrorLog.logger.debug("servicelink:"+this.getServiceLink());
+		KPIErrorLog.logger.debug("servicetype:"+this.getServiceType());
+		KPIErrorLog.logger.debug("servicemethod:"+this.getSerivceMethod());
+		KPIErrorLog.logger.debug("timeout:"+this.getTimeOut());
+		KPIErrorLog.logger.debug("parameter:"+this.getParameter());
+		KPIErrorLog.logger.debug("xmlname:"+this.getXmlFile());
+		
 	}
 	private int getHttpRespose() throws IOException{
 		URL url = new URL(this.getServiceLink());
@@ -149,9 +176,9 @@ public class WebService {
 			 in.close();
 			 System.out.println("response:" + response.toString());*/
 			 return responseStatus;
-			 } catch (Exception e) {
-			 System.out.println(e);
-			 return -1;
+			 } catch (IOException e) {
+				 KPIErrorLog.logger.error("Error Message",e);
+				 return -1;
 			 }
 	}
 	private String getXmlString() throws IOException{
@@ -193,6 +220,8 @@ public class WebService {
 			this.setJsonRspose(respCode,latency);
 			
 		}
+		
+		
 		return this.getJsonRspose();
 		
 		

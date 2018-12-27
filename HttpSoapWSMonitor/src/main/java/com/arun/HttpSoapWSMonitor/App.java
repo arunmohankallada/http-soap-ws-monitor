@@ -15,17 +15,15 @@ import java.io.IOException;
 
 public class App {
 
-	public App() {
-		// TODO Auto-generated constructor stub
-	}
-	
 	public static void main(String[] args) throws Exception {
   
 		JSONParser parser = new JSONParser();
         
         try {
 
-        	JSONArray jsonArray = (JSONArray) parser.parse(new FileReader(new ClasspathFileReader().readInputJson()));
+        	//JSONArray jsonArray = (JSONArray) parser.parse(new FileReader(new ClasspathFileReader().readInputJson()));
+        	JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("/Users/arunmohan/git/HttpSoapWSMonitor/HttpSoapWSMonitor/src/main/resources/WSList.json"));
+	
         	
         	
 
@@ -51,4 +49,4 @@ public class App {
 
     }
 
-	}
+}
