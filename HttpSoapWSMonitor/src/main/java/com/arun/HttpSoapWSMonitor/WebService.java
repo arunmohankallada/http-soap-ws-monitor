@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.DataOutputStream;
 
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -22,6 +23,15 @@ public class WebService {
 	JSONArray parameter;
 	String xmlFile;
 	JSONObject jsonRspose;
+	String respStatus;
+
+	public String getRespStatus() {
+		return respStatus;
+	}
+
+	public void setRespStatus(String respStatus) {
+		this.respStatus = respStatus;
+	}
 
 	public void setJsonRspose(JSONObject jsonRspose) {
 		this.jsonRspose = jsonRspose;
@@ -56,6 +66,7 @@ public class WebService {
 		}
 		this.jsonRspose.put("Response", respText);
 		this.jsonRspose.put("Response status",respColor);
+		this.setRespStatus(respColor);
 		KPIErrorLog.logger.debug(jsonRspose + " Latency:"+latency+" Response Code:"+ resposeCode);
 		
 			

@@ -15,7 +15,7 @@ import com.arun.HttpSoapWSMonitor.WebService;
 public class CtKPI {
     
 	JSONObject KPIObject;
-	private String overAllStatus;
+	private String overAllStatus="";
 	JSONArray kpiData;
 	String outJsonFile;
 	public String getOutJsonFile() {
@@ -29,8 +29,17 @@ public class CtKPI {
 	public String getOverAllStatus() {
 		return overAllStatus;
 	}
-	public void setOverAllStatus(String overAllStatus) {
-		this.overAllStatus = overAllStatus;
+	public void setOverAllStatus(String overallStatus) {
+		if(this.getOverAllStatus().isEmpty()) {
+			this.overAllStatus = overallStatus;
+		}
+		else if (overallStatus.equals("RED")) {
+			this.overAllStatus = overallStatus;
+		}
+		else if (overallStatus.equals("AMBER") && this.getOverAllStatus().equals("GREEN")) {
+			this.overAllStatus = overallStatus;
+		}
+		
 	}
 	public JSONObject getKPIObject() {
 		return KPIObject;
@@ -70,6 +79,7 @@ public class CtKPI {
 			JSONObject jsonObject = (JSONObject) o;
 			WebService ws=new WebService(jsonObject);
 			JSONObject jsonRsp = ws.getResponseCode();
+			this.setOverAllStatus(ws.getRespStatus());
 			KPIErrorLog.logger.debug("OutPut Json: "+ jsonRsp.toString());
 			kpiData.add(jsonRsp);
 			//System.out.println(ws.getResponseCode());

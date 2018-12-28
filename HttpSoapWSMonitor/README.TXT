@@ -1,6 +1,6 @@
 
 Folder Structure
-
+~~~~~~~~~~~~~~~~
 <basedir>			-- Base folder will contain below folders structure
 <basedir>/json		-- The folder to hold in & out json folder
 <basedir>/json/in	-- The folder to hold input json configurations
@@ -13,10 +13,16 @@ Folder Structure
 
 
 Run Properties for Jar 
+~~~~~~~~~~~~~~~~~~~~~~
 -Dlogger.loglevel=<INFO/DEBUG/ERROR>
 -Dbasedir=<base-directory> 
 -Dinjsonfile=<input-json-file-name>
 -Doutjsonfile=<output-json-file-name>
+
+
+Maven Build Goals
+~~~~~~~~~~~~~~~~~
+clean package assembly:single
 
 
 		
